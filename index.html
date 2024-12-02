@@ -289,7 +289,7 @@
           </div>
         </div>
         <div class="kontak-form">
-         <form id="contact-form" method="POST" action="send_email.php">
+         <form id="contact-form" method="POST">
                 <div class="form-group">
                     <label class="form-label">Nama Lengkap</label>
                     <input type="text" name="nama" class="form-input" required />
@@ -445,28 +445,40 @@
       });
 
       //animasi
+      //form
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-      // Form submission handler
-      document
-        .getElementById('contact-form')
-        .addEventListener('submit', function (e) {
-          e.preventDefault();
+    // Ambil data dari form
+    const nama = this.querySelector('input[type="text"]').value;
+    const email = this.querySelector('input[type="email"]').value;
+    const pesan = this.querySelector('textarea').value;
 
-          // Ambil data dari form
-          const nama = this.querySelector('input[type="text"]').value;
-          const email = this.querySelector('input[type="email"]').value;
-          const pesan = this.querySelector('textarea').value;
-
-          // Validasi form
-          if (nama && email && pesan) {
-            // Simulasi pengiriman pesan
-            showToast('Pesan Anda telah terkirim!');
-            this.reset(); // Reset form
-          } else {
-            showToast('Harap isi semua field');
-          }
-        });
-
+    // Validasi form
+    if (nama && email && pesan) {
+        // Buat pesan untuk WhatsApp
+        const whatsappMessage = `Nama: ${nama}%0A` + 
+                                `Email: ${email}%0A` + 
+                                `Pesan: ${pesan}`;
+        
+        // Nomor WhatsApp (ganti dengan nomor resmi perusahaan)
+        const whatsappNumber = '6285789187085';
+        
+        // Buat URL WhatsApp
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+        
+        // Buka WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        // Tampilkan toast notification
+        showToast('Pesan Anda akan diteruskan ke WhatsApp!');
+        
+        // Reset form
+        this.reset();
+    } else {
+        showToast('Harap isi semua field');
+    }
+});
       // Scroll animation untuk section
       function handleIntersection(entries, observer) {
         entries.forEach((entry) => {
